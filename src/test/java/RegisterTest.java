@@ -2,15 +2,27 @@ import io.restassured.RestAssured;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 import page.RegisterPage;
 import page.Urls;
 
 import java.util.UUID;
 
+@RunWith(Parameterized.class)
 public class RegisterTest {
 
-    private WebDriver driver;
+    @Parameterized.Parameters
+    public static String[] params() {
+        return new String[] { WebDriverFactory.CHROME, WebDriverFactory.YANDEX };
+    }
+
+    public RegisterTest(String browser) {
+        this.driver = WebDriverFactory.getWebDriver(browser);
+    }
+
+    private final WebDriver driver;
     private RegisterPage page;
     private String registeredEmail;
     private String registeredPassword;
@@ -18,7 +30,6 @@ public class RegisterTest {
     @Before
     public void setUp() {
         RestAssured.baseURI = Api.BASE_URL;
-        driver = Browser.getWebBrowser(Browser.CHROME);
         driver.get(Urls.REGISTER);
         page = new RegisterPage(driver);
     }

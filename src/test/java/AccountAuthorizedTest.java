@@ -2,15 +2,27 @@ import io.restassured.RestAssured;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 import page.AccountAuthorizedPage;
 import page.AuthPage;
 
 import java.util.UUID;
 
+@RunWith(Parameterized.class)
 public class AccountAuthorizedTest {
 
-    private WebDriver driver;
+    @Parameterized.Parameters
+    public static String[] params() {
+        return new String[] { WebDriverFactory.CHROME, WebDriverFactory.YANDEX };
+    }
+
+    public AccountAuthorizedTest(String browser) {
+        this.driver = WebDriverFactory.getWebDriver(browser);
+    }
+
+    private final WebDriver driver;
     private AuthPage authPage;
     private AccountAuthorizedPage page;
     private final String email = UUID.randomUUID() + "@example.com";
@@ -20,7 +32,6 @@ public class AccountAuthorizedTest {
     public void setUp() {
         RestAssured.baseURI = Api.BASE_URL;
         UserSteps.createUser("name", email, password);
-        driver = Browser.getWebBrowser(Browser.CHROME);
         driver.get("https://stellarburgers.nomoreparties.site/");
         page = new AccountAuthorizedPage(driver);
         authPage = new AuthPage(driver);

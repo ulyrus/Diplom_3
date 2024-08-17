@@ -2,14 +2,26 @@ import io.restassured.RestAssured;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 import page.AuthPage;
 
 import java.util.UUID;
 
+@RunWith(Parameterized.class)
 public class AuthTest {
 
-    private WebDriver driver;
+    @Parameterized.Parameters
+    public static String[] params() {
+        return new String[] { WebDriverFactory.CHROME, WebDriverFactory.YANDEX };
+    }
+
+    public AuthTest(String browser) {
+        this.driver = WebDriverFactory.getWebDriver(browser);
+    }
+
+    private final WebDriver driver;
     private AuthPage page;
     private final String email = UUID.randomUUID() + "@example.com";
     private final String password = UUID.randomUUID().toString();
@@ -18,7 +30,6 @@ public class AuthTest {
     public void setUp() {
         RestAssured.baseURI = Api.BASE_URL;
         UserSteps.createUser("name", email, password);
-        driver = Browser.getWebBrowser(Browser.CHROME);
         page = new AuthPage(driver);
     }
 
