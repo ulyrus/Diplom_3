@@ -1,6 +1,6 @@
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-import page.CommonSteps;
+import org.example.page.CommonSteps;
 
 import static io.restassured.RestAssured.given;
 
@@ -28,6 +28,7 @@ public class UserSteps {
     @Step("delete user")
     public static void deleteUser(String email, String password) {
         String accessToken = getUserAccessToken(email, password);
+        if (accessToken == null) return;
         given()
                 .header("Content-Type", "application/json")
                 .header("Authorization", accessToken)

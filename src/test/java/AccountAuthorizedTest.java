@@ -1,66 +1,46 @@
-import io.restassured.RestAssured;
-import org.junit.After;
+import io.qameta.allure.junit4.DisplayName;
+import org.example.page.AccountAuthorizedPage;
+import org.example.page.AuthPage;
+import org.example.page.Urls;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.openqa.selenium.WebDriver;
-import page.AccountAuthorizedPage;
-import page.AuthPage;
 
-import java.util.UUID;
+public class AccountAuthorizedTest extends BaseTest {
 
-@RunWith(Parameterized.class)
-public class AccountAuthorizedTest {
-
-    @Parameterized.Parameters
-    public static String[] params() {
-        return new String[] { WebDriverFactory.CHROME, WebDriverFactory.YANDEX };
-    }
-
-    public AccountAuthorizedTest(String browser) {
-        this.driver = WebDriverFactory.getWebDriver(browser);
-    }
-
-    private final WebDriver driver;
     private AuthPage authPage;
     private AccountAuthorizedPage page;
-    private final String email = UUID.randomUUID() + "@example.com";
-    private final String password = UUID.randomUUID().toString();
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = Api.BASE_URL;
-        UserSteps.createUser("name", email, password);
         driver.get("https://stellarburgers.nomoreparties.site/");
         page = new AccountAuthorizedPage(driver);
         authPage = new AuthPage(driver);
     }
 
     @Test
+    @DisplayName("переход по клику на «Конструктор»")
     public void clickAtConstructorNavigateToMainTest() {
         authPage.loginThroughMainPage(email, password);
         page.navigateToAccount();
         page.checkClickAtConstructorNavigate();
+        waitUrl(Urls.MAIN);
     }
 
     @Test
+    @DisplayName("переход по клику на логотип Stellar Burgers")
     public void clickAtLogoNavigateToMainTest() {
         authPage.loginThroughMainPage(email, password);
         page.navigateToAccount();
         page.checkClickAtLogoNavigate();
+        waitUrl(Urls.MAIN);
     }
 
     @Test
+    @DisplayName("выход по кнопке «Выйти» в личном кабинете")
     public void clickAtLogoutTest() {
         authPage.loginThroughMainPage(email, password);
         page.navigateToAccount();
         page.checkLogout();
-    }
-
-    @After
-    public void tearDown() {
-        UserSteps.deleteUser(email, password);
-        driver.quit();
+        waitUrl(Urls.LOGIN);
     }
 }

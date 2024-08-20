@@ -1,61 +1,44 @@
-import io.restassured.RestAssured;
-import org.junit.After;
+import io.qameta.allure.junit4.DisplayName;
+import org.example.page.AuthPage;
+import org.example.page.CommonSteps;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.openqa.selenium.WebDriver;
-import page.AuthPage;
 
-import java.util.UUID;
+public class AuthTest extends BaseTest {
 
-@RunWith(Parameterized.class)
-public class AuthTest {
-
-    @Parameterized.Parameters
-    public static String[] params() {
-        return new String[] { WebDriverFactory.CHROME, WebDriverFactory.YANDEX };
-    }
-
-    public AuthTest(String browser) {
-        this.driver = WebDriverFactory.getWebDriver(browser);
-    }
-
-    private final WebDriver driver;
     private AuthPage page;
-    private final String email = UUID.randomUUID() + "@example.com";
-    private final String password = UUID.randomUUID().toString();
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = Api.BASE_URL;
-        UserSteps.createUser("name", email, password);
         page = new AuthPage(driver);
     }
 
     @Test
+    @DisplayName("вход по кнопке «Войти в аккаунт» на главной")
     public void loginThroughLoginButtonImMainPageTest() {
         page.loginThroughMainPage(email, password);
+        CommonSteps.waitVisibility(driver, AuthPage.buttonOrder);
     }
 
     @Test
+    @DisplayName("вход через кнопку «Личный кабинет»")
     public void loginThroughAccountButtonTest() {
         page.loginThroughAccountButton(email, password);
+        CommonSteps.waitVisibility(driver, AuthPage.buttonOrder);
     }
 
     @Test
+    @DisplayName("вход через кнопку в форме регистрации")
     public void loginThroughRegisterFormTest() {
         page.loginThroughRegisterForm(email, password);
+        CommonSteps.waitVisibility(driver, AuthPage.buttonOrder);
     }
 
     @Test
+    @DisplayName("вход через кнопку в форме восстановления пароля")
     public void loginUsingForgotFormTest() {
         page.loginThroughForgotPassword(email, password);
+        CommonSteps.waitVisibility(driver, AuthPage.buttonOrder);
     }
 
-    @After
-    public void tearDown() {
-        UserSteps.deleteUser(email, password);
-        driver.quit();
-    }
 }

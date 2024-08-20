@@ -1,4 +1,4 @@
-package page;
+package org.example.page;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -12,15 +12,15 @@ public class AuthPage {
         this.driver = driver;
     }
 
-    private final By buttonLoginInMainPage = By.xpath(".//button[text()='Войти в аккаунт']");
-    private final By pAccount = By.xpath(".//p[text()='Личный Кабинет']");
-    private final By aLoginInRegister = By.xpath(".//a[text()='Войти']");
-    private final By aLoginInForgotPassword = By.xpath(".//a[text()='Войти']");
+    public static final By buttonLoginInMainPage = By.xpath(".//button[text()='Войти в аккаунт']");
+    public static final By pAccount = By.xpath(".//p[text()='Личный Кабинет']");
+    public static final By aLoginInRegister = By.xpath(".//a[text()='Войти']");
+    public static final By aLoginInForgotPassword = By.xpath(".//a[text()='Войти']");
 
-    private final By inputEmail = By.xpath(".//label[text()='Email']/following-sibling::input");
-    private final By inputPassword = By.xpath(".//label[text()='Пароль']/following-sibling::input");
-    private final By buttonLogin = By.xpath(".//button[text()='Войти']");
-    private final By buttonOrder = By.xpath(".//button[text()='Оформить заказ']");
+    public static final By inputEmail = By.xpath(".//label[text()='Email']/following-sibling::input");
+    public static final By inputPassword = By.xpath(".//label[text()='Пароль']/following-sibling::input");
+    public static final By buttonLogin = By.xpath(".//button[text()='Войти']");
+    public static final By buttonOrder = By.xpath(".//button[text()='Оформить заказ']");
 
     @Step("login through login button in main page")
     public void loginThroughMainPage(String email, String password) {
@@ -80,17 +80,11 @@ public class AuthPage {
         driver.findElement(buttonLogin).click();
     }
 
-    @Step("wait order button visibility")
-    private void waitOrderButtonVisibility() {
-        CommonSteps.waitVisibility(driver, buttonOrder);
-    }
-
     @Step("login")
     private void login(String email, String password) {
         fillEmail(email);
         fillPassword(password);
         clickLogin();
-        waitOrderButtonVisibility();
     }
 
 }

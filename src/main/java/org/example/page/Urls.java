@@ -1,4 +1,4 @@
-package page;
+package org.example.page;
 
 public class Urls {
     public static String MAIN = "https://stellarburgers.nomoreparties.site/";

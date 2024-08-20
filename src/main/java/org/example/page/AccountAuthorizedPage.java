@@ -1,4 +1,4 @@
-package page;
+package org.example.page;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -12,11 +12,11 @@ public class AccountAuthorizedPage {
         this.driver = driver;
     }
 
-    private final By pAccount = By.xpath(".//p[text()='Личный Кабинет']");
-    private final By constructor = By.xpath(".//p[text()='Конструктор']");
-    private final By logo = By.className("AppHeader_header__logo__2D0X2");
-    private final By logout = By.xpath(".//button[text()='Выход']");
-    private final By login = By.xpath(".//button[text()='Войти']");
+    public static final By pAccount = By.xpath(".//p[text()='Личный Кабинет']");
+    public static final By constructor = By.xpath(".//p[text()='Конструктор']");
+    public static final By logo = By.className("AppHeader_header__logo__2D0X2");
+    public static final By logout = By.xpath(".//button[text()='Выход']");
+    public static final By login = By.xpath(".//button[text()='Войти']");
 
     @Step("click at Личный Кабинет to navigate")
     public void navigateToAccount() {
@@ -28,14 +28,12 @@ public class AccountAuthorizedPage {
     public void checkClickAtConstructorNavigate() {
         waitLoad(constructor);
         click(constructor);
-        waitUrlChangeToMain();
     }
 
     @Step("click at logo to navigate")
     public void checkClickAtLogoNavigate() {
         waitLoad(logo);
         click(logo);
-        waitUrlChangeToMain();
     }
 
     @Step("logout")
@@ -43,7 +41,6 @@ public class AccountAuthorizedPage {
         waitLoad(logout);
         click(logout);
         waitLoad(login);
-        waitUrlChangeToLogin();
     }
 
     @Step("wait load")
@@ -54,15 +51,5 @@ public class AccountAuthorizedPage {
     @Step("click at navigating element")
     public void click(By by) {
         driver.findElement(by).click();
-    }
-
-    @Step("wait url change to main")
-    public void waitUrlChangeToMain() {
-        CommonSteps.waitUrl(driver, Urls.MAIN);
-    }
-
-    @Step("wait url change to login")
-    public void waitUrlChangeToLogin() {
-        CommonSteps.waitUrl(driver, Urls.LOGIN);
     }
 }

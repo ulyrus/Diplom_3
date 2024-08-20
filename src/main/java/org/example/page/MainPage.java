@@ -1,4 +1,4 @@
-package page;
+package org.example.page;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -14,28 +14,27 @@ public class MainPage {
         this.driver = driver;
     }
 
-    private final String BUN = "Булки";
-    private final String SAUCE = "Соусы";
-    private final String FILL = "Начинки";
-    private final By account = By.xpath(".//p[text()='Личный Кабинет']");
-    private final By tabBun = By.xpath(String.format(".//span[text()='%s']", BUN));
-    private final By tabSauce = By.xpath(String.format(".//span[text()='%s']", SAUCE));
-    private final By tabFill = By.xpath(String.format(".//span[text()='%s']", FILL));
-    private final By selectedTab = By.className("tab_tab_type_current__2BEPc");
+    public static final String BUN = "Булки";
+    public static final String SAUCE = "Соусы";
+    public static final String FILL = "Начинки";
+
+    public static final By account = By.xpath(".//p[text()='Личный Кабинет']");
+    public static final By tabBun = By.xpath(String.format(".//span[text()='%s']", BUN));
+    public static final By tabSauce = By.xpath(String.format(".//span[text()='%s']", SAUCE));
+    public static final By tabFill = By.xpath(String.format(".//span[text()='%s']", FILL));
+    public static final By selectedTab = By.className("tab_tab_type_current__2BEPc");
 
     @Step("navigation from account to long")
     public void checkNavigationWork() {
         driver.get(Urls.MAIN);
         waitLoad(account);
         clickButtonAccount();
-        waitUrlChangedToLogin();
     }
 
     @Step("select tab " + BUN)
     public void clickAtBunTabShouldSelectTab() {
         waitLoad(tabBun);
         clickAtBunTab();
-        validateSelectedTab(BUN);
     }
 
     @Step("select tab " + SAUCE)
@@ -43,7 +42,6 @@ public class MainPage {
         driver.get(Urls.MAIN);
         waitLoad(tabSauce);
         clickAtSauceTab();
-        validateSelectedTab(SAUCE);
     }
 
     @Step("select tab " + FILL)
@@ -51,7 +49,6 @@ public class MainPage {
         driver.get(Urls.MAIN);
         waitLoad(tabFill);
         clickAtFillTab();
-        validateSelectedTab(FILL);
     }
 
     @Step("wait load")
@@ -62,11 +59,6 @@ public class MainPage {
     @Step("click Личный кабинет")
     private void clickButtonAccount() {
         driver.findElement(account).click();
-    }
-
-    @Step("assert url changed")
-    private void waitUrlChangedToLogin() {
-        CommonSteps.waitUrl(driver, Urls.LOGIN);
     }
 
     @Step("click " + BUN)
@@ -84,8 +76,8 @@ public class MainPage {
         driver.findElement(tabFill).click();
     }
 
-    @Step("validate stand selected")
-    public void validateSelectedTab(String text) {
+    @Step("wait tab selection")
+    public void waitTabSelection(String text) {
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.textToBe(selectedTab, text));
     }

@@ -1,4 +1,4 @@
-package page;
+package org.example.page;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -14,12 +14,12 @@ public class RegisterPage {
         this.driver = driver;
     }
 
-    private final By inputName = By.xpath(".//label[text()='Имя']/following-sibling::input");
-    private final By inputEmail = By.xpath(".//label[text()='Email']/following-sibling::input");
-    private final By inputPassword = By.xpath(".//label[text()='Пароль']/following-sibling::input");
-    private final By buttonRegister = By.xpath(".//button[text()='Зарегистрироваться']");
-    private final By aRegister = By.xpath(".//a[text()='Зарегистрироваться']");
-    private final By errorLabel = By.xpath(".//p[text()='Некорректный пароль']");
+    public static final By inputName = By.xpath(".//label[text()='Имя']/following-sibling::input");
+    public static final By inputEmail = By.xpath(".//label[text()='Email']/following-sibling::input");
+    public static final By inputPassword = By.xpath(".//label[text()='Пароль']/following-sibling::input");
+    public static final By buttonRegister = By.xpath(".//button[text()='Зарегистрироваться']");
+    public static final By aRegister = By.xpath(".//a[text()='Зарегистрироваться']");
+    public static final By errorLabel = By.xpath(".//p[text()='Некорректный пароль']");
 
     @Step("register account, expect success")
     public void registerSuccessfully(String email, String name, String password) {
@@ -28,7 +28,6 @@ public class RegisterPage {
         fillInputEmail(email);
         fillInputPassword(password);
         clickRegisterButton();
-        waitLoadAuth();
     }
 
     @Step("register account, not filled password field")
@@ -38,12 +37,6 @@ public class RegisterPage {
         fillInputEmail(UUID.randomUUID() + "@example.com");
         fillInputPassword("pass");
         clickRegisterButton();
-        waitPasswordNotFilledLabel();
-    }
-
-    @Step("wait load auth page")
-    private void waitLoadAuth() {
-        CommonSteps.waitVisibility(driver, aRegister);
     }
 
     @Step("wait load register page")
@@ -69,11 +62,6 @@ public class RegisterPage {
     @Step("click Зарегистрироваться button")
     private void clickRegisterButton() {
         driver.findElement(buttonRegister).click();
-    }
-
-    @Step("validate shown password not correct error label")
-    private void waitPasswordNotFilledLabel() {
-        CommonSteps.waitVisibility(driver, errorLabel);
     }
 
 }
